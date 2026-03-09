@@ -1,0 +1,7 @@
+text,label
+admin' OR 1=1,sql_injection
+1; DROP TABLE users,sql_injection
+SELECT * FROM users,sql_injection
+hello how are you,normal
+show my profile,normal
+login page opened,normal
