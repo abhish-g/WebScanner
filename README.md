@@ -1,172 +1,45 @@
-\# RAG Security Scanner
+# 🛡️ WebScanner — ML + RAG Security Scanner
 
+> A machine-learning and Retrieval-Augmented Generation (RAG) based web security scanner for detecting common security threats and generating contextual security explanations.
 
+<p align="center">
 
-A machine-learning and Retrieval-Augmented Generation (RAG) based security scanner for detecting common security threats in web and AI applications.
+**Detect → Retrieve → Explain**
 
+</p>
 
+---
 
-The system combines a trained ML classifier with a FAISS-based security knowledge retrieval system and an LLM-powered explanation layer through OpenRouter.
+## 🚀 Overview
 
+**WebScanner** is a security analysis system that combines:
 
+- 🤖 Machine Learning for attack detection
+- 🔎 RAG for retrieving relevant cybersecurity knowledge
+- 🧠 LLM-based explanations
+- ⚡ Flask REST API
+- 🌐 Interactive web interface
+- 🧪 Automated testing
 
-\---
+The system currently detects:
 
+| Attack Type | Severity |
+|---|---|
+| 💉 SQL Injection | 🔴 Critical |
+| 🕸️ Cross-Site Scripting (XSS) | 🟠 High |
+| 🤖 Prompt Injection | 🟠 High |
+| ✅ Normal Input | 🟢 Safe |
 
+---
 
-\## 1. Project Overview
+## ✨ Features
 
+### 🤖 ML-Based Detection
 
-
-Modern web and AI applications can be exposed to different types of malicious input such as:
-
-
-
-\- SQL Injection
-
-\- Cross-Site Scripting (XSS)
-
-\- Prompt Injection
-
-
-
-Manually analyzing these payloads can be difficult and time-consuming.
-
-
-
-This project provides an automated security scanning pipeline that:
-
-
-
-1\. Accepts a user-supplied payload.
-
-2\. Classifies the payload using a machine-learning model.
-
-3\. Calculates a confidence score.
-
-4\. Retrieves relevant cybersecurity knowledge using RAG.
-
-5\. Uses an LLM to generate a human-readable security explanation.
-
-6\. Assigns a severity level.
-
-7\. Displays the result through a web interface.
-
-
-
-\---
-
-
-
-\## 2. System Architecture
-
-
+The scanner classifies incoming payloads into:
 
 ```text
-
-&#x20;                   ┌─────────────────────┐
-
-&#x20;                   │     Web Interface   │
-
-&#x20;                   │   HTML + CSS + JS   │
-
-&#x20;                   └──────────┬──────────┘
-
-&#x20;                              │
-
-&#x20;                              │ POST /scan
-
-&#x20;                              ▼
-
-&#x20;                   ┌─────────────────────┐
-
-&#x20;                   │     Flask API       │
-
-&#x20;                   │      /scan          │
-
-&#x20;                   └──────────┬──────────┘
-
-&#x20;                              │
-
-&#x20;                              ▼
-
-&#x20;                   ┌─────────────────────┐
-
-&#x20;                   │   ML Attack         │
-
-&#x20;                   │   Detector          │
-
-&#x20;                   └──────────┬──────────┘
-
-&#x20;                              │
-
-&#x20;                   ┌──────────┴──────────┐
-
-&#x20;                   │                     │
-
-&#x20;                   ▼                     ▼
-
-&#x20;             Attack Detected          Normal
-
-&#x20;                   │                     │
-
-&#x20;                   ▼                     ▼
-
-&#x20;             ┌───────────┐          SAFE Response
-
-&#x20;             │    RAG    │
-
-&#x20;             │ Retriever │
-
-&#x20;             └─────┬─────┘
-
-&#x20;                   │
-
-&#x20;                   ▼
-
-&#x20;             ┌─────────────┐
-
-&#x20;             │    FAISS    │
-
-&#x20;             │ Vector Index│
-
-&#x20;             └──────┬──────┘
-
-&#x20;                    │
-
-&#x20;                    ▼
-
-&#x20;             Relevant Security
-
-&#x20;                 Knowledge
-
-&#x20;                    │
-
-&#x20;                    ▼
-
-&#x20;             ┌─────────────┐
-
-&#x20;             │  OpenRouter │
-
-&#x20;             │     LLM     │
-
-&#x20;             └──────┬──────┘
-
-&#x20;                    │
-
-&#x20;                    ▼
-
-&#x20;             Security Explanation
-
-&#x20;                    │
-
-&#x20;                    ▼
-
-&#x20;               JSON Response
-
-&#x20;                    │
-
-&#x20;                    ▼
-
-&#x20;                Web UI
-
+sql_injection
+xss
+prompt_injection
+normal
