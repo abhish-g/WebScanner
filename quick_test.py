@@ -2,6 +2,8 @@
 """Quick OpenAI security test"""
 
 import os
+from dotenv import load_dotenv
+load_dotenv()
 from src.rag_scanner import RAGSecurityScanner
 
 def quick_test():

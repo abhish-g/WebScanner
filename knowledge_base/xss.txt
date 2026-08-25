@@ -1,0 +1,28 @@
+Cross-Site Scripting Security Knowledge
+
+Cross-Site Scripting (XSS) is a web security vulnerability where an attacker causes malicious client-side code to execute in another user's browser.
+
+Common example:
+<script>alert('XSS')</script>
+
+XSS can occur when an application includes untrusted input in HTML without appropriate output encoding.
+
+Potential impacts include:
+- Session compromise
+- Unauthorized actions performed in a victim's browser
+- Phishing
+- Modification of page content
+- Theft of sensitive browser-accessible information
+
+Primary prevention:
+1. Apply context-aware output encoding.
+2. Sanitize HTML when HTML input is intentionally allowed.
+3. Use Content Security Policy (CSP).
+4. Validate input where appropriate.
+5. Avoid unsafe DOM APIs such as innerHTML when handling untrusted data.
+6. Use secure cookie attributes such as HttpOnly and SameSite where appropriate.
+
+Security classification:
+Category: Cross-Site Scripting
+Severity: High
+Primary defense: Context-aware output encoding

@@ -1,138 +1,438 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>RAG Security Scanner</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
 </head>
+
 <body>
-<div class="bg"></div>
 
-<header class="topbar">
-    <div class="brand">
-        <div class="logo">🛡️</div>
-        <div class="title">
-            <h1>RAG Security Scanner</h1>
-            <p>ML + RAG based security checks </p>
-        </div>
-    </div>
+    <!-- Top Navigation -->
+    <header class="topbar">
 
-    <div class="top-actions">
-        <button class="btn ghost" id="themeBtn" type="button" title="Toggle theme">🌙</button>
-        <!-- <a class="btn ghost" href="http://localhost:8000/docs" target="_blank" rel="noreferrer">FastAPI Docs ↗️</a> -->
-    </div>
-</header>
+        <div class="brand">
 
-<main class="container">
-    <section class="grid">
-        <!-- Left: Input Card -->
-        <div class="card">
-            <div class="card-head">
-                <h2>Scan URL</h2>
-                <span class="pill">POST /scan</span>
+            <div class="logo">
+                🛡
             </div>
 
-            <label class="label" for="payload">URL/Payload</label>
-            <textarea id="payload" placeholder="Example: https://google.com || admin' OR '1'='1"></textarea>
-
-            <div class="row">
-                <button class="btn primary" id="scanBtn" type="button">Scan</button>
-                <button class="btn" id="clearBtn" type="button">Clear</button>
-                <button class="btn" id="sampleBtn" type="button">Load Sample</button>
+            <div>
+                <h1>RAG Security Scanner</h1>
+                <p>ML-powered security analysis with RAG</p>
             </div>
 
-            <div class="hint">
-            <h4>Tip: Try anyone </h4> <code>https://www.google.com</code> or <br><br><code>&lt;script&gt;alert(1)&lt;/script&gt;</code> or <br><br><code>     admin' OR '1'='1</code>
-            </div>
         </div>
 
-        <!-- Right: Result Card -->
-        <div class="card">
-            <div class="card-head">
-                <h2>Result</h2>
-                <div class="statusline">
-                    <span class="dot" id="statusDot"></span>
-                    <span id="statusText">Idle</span>
+        <div class="top-actions">
+
+            <div class="system-status">
+                <span class="status-indicator"></span>
+                System Ready
+            </div>
+
+            <button
+                id="themeBtn"
+                class="icon-btn"
+                type="button"
+                title="Toggle theme">
+                ☾
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <main class="container">
+
+        <!-- Pipeline -->
+        <section class="pipeline">
+
+            <div class="pipeline-step active">
+                <span class="step-number">01</span>
+                <div>
+                    <strong>Input</strong>
+                    <small>Payload</small>
                 </div>
             </div>
 
-            <div class="result">
-                <div class="metric">
-                    <div class="metric-label">Attack Type</div>
-                    <div class="metric-value" id="attackType">—</div>
-                    <span class="badge" id="severityBadge">—</span>
+            <div class="pipeline-line"></div>
+
+            <div class="pipeline-step">
+                <span class="step-number">02</span>
+                <div>
+                    <strong>ML Detection</strong>
+                    <small>Classification</small>
+                </div>
+            </div>
+
+            <div class="pipeline-line"></div>
+
+            <div class="pipeline-step">
+                <span class="step-number">03</span>
+                <div>
+                    <strong>RAG</strong>
+                    <small>Knowledge retrieval</small>
+                </div>
+            </div>
+
+            <div class="pipeline-line"></div>
+
+            <div class="pipeline-step">
+                <span class="step-number">04</span>
+                <div>
+                    <strong>Analysis</strong>
+                    <small>LLM explanation</small>
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- Main Grid -->
+        <section class="main-grid">
+
+
+            <!-- Scanner -->
+            <div class="card scanner-card">
+
+                <div class="card-header">
+
+                    <div>
+                        <span class="eyebrow">SECURITY SCAN</span>
+                        <h2>Analyze a payload</h2>
+                        <p>
+                            Enter a URL or suspicious request payload
+                            to run the security pipeline.
+                        </p>
+                    </div>
+
+                    <span class="endpoint">
+                        POST /scan
+                    </span>
+
                 </div>
 
-                <div class="metric">
-                    <div class="metric-label">Confidence</div>
-                    <div class="metric-value" id="confidenceVal">—</div>
+
+                <label for="payload">
+                    URL / PAYLOAD
+                </label>
+
+                <textarea
+                    id="payload"
+                    spellcheck="false"
+                    placeholder="Example: admin' OR '1'='1"></textarea>
+
+
+                <!-- Examples -->
+                <div class="examples">
+
+                    <span>Examples</span>
+
+                    <button
+                        class="example-btn"
+                        data-payload="admin' OR '1'='1">
+                        SQL Injection
+                    </button>
+
+                    <button
+                        class="example-btn"
+                        data-payload="<script>alert(1)</script>">
+                        XSS
+                    </button>
+
+                    <button
+                        class="example-btn"
+                        data-payload="ignore previous instructions">
+                        Prompt Injection
+                    </button>
+
+                    <button
+                        class="example-btn"
+                        data-payload="show my profile">
+                        Safe Input
+                    </button>
+
                 </div>
 
-                <div class="bar-wrap">
-                    <div class="bar">
-                        <div class="bar-fill" id="confBar"></div>
-                    </div>
-                    <div class="bar-legend">
-                        <span>0%</span><span>50%</span><span>100%</span>
-                    </div>
+
+                <!-- Buttons -->
+                <div class="action-row">
+
+                    <button
+                        id="scanBtn"
+                        class="scan-btn"
+                        type="button">
+
+                        <span>Run security scan</span>
+                        <span class="arrow">→</span>
+
+                    </button>
+
+                    <button
+                        id="clearBtn"
+                        class="secondary-btn"
+                        type="button">
+
+                        Clear
+
+                    </button>
+
                 </div>
 
-                <div class="details">
-                    <div class="details-head">
-                        <h3>Raw JSON</h3>
-                        <button class="btn ghost small" id="copyBtn" type="button">Copy</button>
+
+                <div class="scanner-footer">
+
+                    <span>
+                        <span class="mini-dot"></span>
+                        Local ML classifier
+                    </span>
+
+                    <span>
+                        FAISS + RAG
+                    </span>
+
+                    <span>
+                        OpenRouter LLM
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- Result -->
+            <div class="card result-card">
+
+                <div class="card-header result-header">
+
+                    <div>
+                        <span class="eyebrow">SCAN RESULT</span>
+                        <h2>Security assessment</h2>
                     </div>
+
+                    <div
+                        id="statusText"
+                        class="result-status">
+                        Idle
+                    </div>
+
+                </div>
+
+
+                <!-- Main Result -->
+                <div class="result-main">
+
+                    <div class="attack-info">
+
+                        <span class="metric-label">
+                            DETECTION
+                        </span>
+
+                        <div
+                            id="attackType"
+                            class="attack-name">
+                            —
+                        </div>
+
+                        <span
+                            id="severityBadge"
+                            class="badge unk">
+                            —
+                        </span>
+
+                    </div>
+
+
+                    <div class="confidence">
+
+                        <div class="confidence-top">
+
+                            <span class="metric-label">
+                                CONFIDENCE
+                            </span>
+
+                            <strong id="confidenceVal">
+                                —
+                            </strong>
+
+                        </div>
+
+                        <div class="confidence-bar">
+
+                            <div
+                                id="confBar"
+                                class="confidence-fill">
+                            </div>
+
+                        </div>
+
+                        <div class="confidence-labels">
+                            <span>0</span>
+                            <span>50</span>
+                            <span>100%</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Payload -->
+                <div class="result-section">
+
+                    <div class="section-title">
+                        Detected payload
+                    </div>
+
+                    <code
+                        id="detectedPayload"
+                        class="payload-display">
+                        —
+                    </code>
+
+                </div>
+
+
+                <!-- AI Explanation -->
+                <div class="result-section">
+
+                    <div class="section-title explanation-title">
+
+                        <span>
+                            AI security analysis
+                        </span>
+
+                        <span class="ai-label">
+                            RAG + LLM
+                        </span>
+
+                    </div>
+
+                    <div
+                        id="explanationBox"
+                        class="explanation">
+                        Run a scan to generate an explanation.
+                    </div>
+
+                </div>
+
+
+                <!-- Raw JSON -->
+                <details class="raw-section">
+
+                    <summary>
+                        <span>Raw API response</span>
+                        <button
+                            id="copyBtn"
+                            class="copy-btn"
+                            type="button">
+                            Copy
+                        </button>
+                    </summary>
+
                     <pre id="rawJson">{ }</pre>
-                </div>
-                <div class="details">
-                    <div class="details-head">
-                        <h3>🤖 AI Explanation</h3>
-                    </div>
-                    <pre id="explanationBox">—</pre>
-                </div>
-                
+
+                </details>
+
             </div>
 
-            <div class="toast" id="toast">Copied</div>
+        </section>
+
+
+        <!-- History -->
+        <section class="card history-card">
+
+            <div class="card-header">
+
+                <div>
+                    <span class="eyebrow">ACTIVITY</span>
+                    <h2>Recent scans</h2>
+                </div>
+
+                <span
+                    id="historyCount"
+                    class="history-count">
+                    0 scans
+                </span>
+
+            </div>
+
+
+            <div class="table-wrap">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>TIME</th>
+                            <th>PAYLOAD</th>
+                            <th>DETECTION</th>
+                            <th>CONFIDENCE</th>
+                            <th>SEVERITY</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="historyBody">
+
+                        <tr class="empty">
+
+                            <td colspan="5">
+                                No scans yet. Run your first scan.
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- Loading Overlay -->
+    <div
+        id="overlay"
+        class="overlay">
+
+        <div class="loading-box">
+
+            <div class="spinner"></div>
+
+            <strong>
+                Running security analysis
+            </strong>
+
+            <span>
+                ML detection → RAG → LLM
+            </span>
+
         </div>
-    </section>
 
-    <!-- History -->
-    <section class="card">
-        <div class="card-head">
-            <h2>Scan History</h2>
-            <span class="pill" id="historyCount">0 scans</span>
-        </div>
+    </div>
 
-        <div class="table-wrap">
-            <table>
-                <thead>
-                <tr>
-                    <th>Time</th>
-                    <th>Payload</th>
-                    <th>Attack</th>
-                    <th>Confidence</th>
-                    <th>Severity</th>
-                </tr>
-                </thead>
-                <tbody id="historyBody">
-                <tr class="empty">
-                    <td colspan="5">No scans yet. Run your first scan.</td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </section>
-</main>
 
-<!-- Loading overlay -->
-<div class="overlay" id="overlay">
-    <div class="spinner"></div>
-    <div class="overlay-text">Scanning…</div>
-</div>
+    <!-- Toast -->
+    <div
+        id="toast"
+        class="toast">
+        Copied
+    </div>
 
-<script src="{{ url_for('static', filename='app.js') }}"></script>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+
 </body>
 </html>

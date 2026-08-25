@@ -1,0 +1,37 @@
+SQL Injection Security Knowledge
+
+SQL Injection is a web application vulnerability that occurs when untrusted user input is directly incorporated into SQL queries.
+
+Example attack:
+admin' OR 1=1
+
+This type of payload attempts to alter the logic of a SQL query. In an insecure login query, user input may be concatenated directly into SQL syntax, allowing an attacker to manipulate the intended WHERE condition.
+
+Potential impacts include:
+- Authentication bypass
+- Unauthorized data access
+- Sensitive information disclosure
+- Modification or deletion of database records
+- Privilege escalation
+
+Primary prevention:
+1. Use parameterized queries or prepared statements.
+2. Never concatenate untrusted user input directly into SQL statements.
+3. Validate input according to the expected data type and format.
+4. Apply least-privilege permissions to database accounts.
+5. Do not expose detailed database errors to users.
+6. Log suspicious requests for security monitoring.
+7. Use a web application firewall as an additional defense layer.
+
+Parameterized queries are the preferred defense because user input is treated as data rather than executable SQL syntax.
+
+For Python sqlite3, a safe pattern is:
+cursor.execute(
+    "SELECT * FROM users WHERE username = ?",
+    (username,)
+)
+
+Security classification:
+Category: SQL Injection
+Severity: High
+Primary defense: Parameterized queries

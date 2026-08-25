@@ -1,0 +1,26 @@
+Prompt Injection Security Knowledge
+
+Prompt injection is a security vulnerability in AI and RAG systems where untrusted user input attempts to manipulate the instructions or behavior of an AI model.
+
+Security classification:
+Category: Prompt Injection
+Severity: High
+Primary defense: Instruction hierarchy, input isolation, prompt boundaries, and output validation
+
+What this attack does:
+A prompt injection payload attempts to override, modify, or bypass the instructions given to an AI system. Examples include requests such as "ignore previous instructions" or attempts to make the model reveal protected information.
+
+Potential security impact:
+- Manipulation of model behavior
+- Disclosure of sensitive system or contextual information
+- Unauthorized actions through connected tools
+- Bypassing intended application restrictions
+- Data leakage from RAG or connected knowledge sources
+
+Recommended prevention:
+- Clearly separate system instructions from untrusted user input
+- Treat retrieved documents and user content as untrusted data
+- Use strong instruction hierarchy
+- Validate and constrain model outputs
+- Apply least privilege to tools and external actions
+- Do not allow untrusted content to override system or application instructions
