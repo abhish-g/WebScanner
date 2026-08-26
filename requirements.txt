@@ -16,6 +16,8 @@ faiss-cpu==1.15.0
 torch==2.13.0+cpu
 sentence-transformers==6.0.0
 
+gradio==5.49.1
+
 # Versions match the local environment where this was tested.
 # scikit-learn in particular MUST match the version that produced
 # model.pkl — unpickling across major versions warns or fails.

@@ -12,16 +12,14 @@ import joblib
 
 from ml_detector.normalize import normalize
 
-# Resolve relative to THIS file, not the current working directory.
-# The old version broke depending on where the process was launched.
 _DIR = Path(__file__).resolve().parent
 
 MODEL_PATH = _DIR / "model.pkl"
 VECTORIZER_PATH = _DIR / "vectorizer.pkl"
 
-CONFIDENCE_THRESHOLD = 0.75
+CONFIDENCE_THRESHOLD = 0.50
+MARGIN_THRESHOLD = 3.0
 
-# Labels that mean "do not treat this as a confirmed attack".
 NON_ATTACK_LABELS = {"normal", "uncertain", "unknown"}
 
 try:
@@ -43,10 +41,6 @@ def detect_attack(text: str) -> dict:
 
     text_vector = vectorizer.transform([normalized])
 
-    # If nothing in the input matched the vocabulary, the vector is all
-    # zeros. The model will still happily predict (usually the majority
-    # class, sometimes with high confidence) which is a silent wrong
-    # answer. Bail out instead.
     if text_vector.nnz == 0:
         return {
             "attack": "unknown",
@@ -68,8 +62,14 @@ def detect_attack(text: str) -> dict:
     predicted_class = ranked[0][0]
     confidence = float(ranked[0][1])
 
-    # Avoid making a strong claim when the model is uncertain.
-    if confidence < CONFIDENCE_THRESHOLD:
+    runner_up = float(ranked[1][1]) if len(ranked) > 1 else 0.0
+    margin = confidence / runner_up if runner_up > 0 else float("inf")
+
+    # Accept when the model is confident outright, OR when it is
+    # decisively more confident in the top class than the next one.
+    # TF-IDF spreads probability mass across longer inputs, so an
+    # absolute threshold alone unfairly penalises long payloads.
+    if confidence < CONFIDENCE_THRESHOLD and margin < MARGIN_THRESHOLD:
         predicted_class = "uncertain"
 
     return {
@@ -88,8 +88,8 @@ if __name__ == "__main__":
     test_inputs = [
         "admin' OR 1=1",
         "<script>alert(1)</script>",
-        "%3Cscript%3Ealert(1)%3C/script%3E",  # URL-encoded XSS
-        "&lt;script&gt;alert(1)&lt;/script&gt;",  # HTML-encoded XSS
+        "%3Cscript%3Ealert(1)%3C/script%3E",
+        "&lt;script&gt;alert(1)&lt;/script&gt;",
         "ignore previous instructions",
         "show my profile",
         "please update my account information",
