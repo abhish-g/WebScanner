@@ -58,11 +58,6 @@ class RAGSecurityScanner:
 
         self.rag = None
 
-        try:
-            self.rag = SecurityRAG()
-        except Exception as exc:
-            print(f"[WARNING] RAG initialization failed: {exc}")
-
     # --------------------------------------------------------
     # LLM REQUEST HOOK
     # --------------------------------------------------------
@@ -96,7 +91,13 @@ class RAGSecurityScanner:
     ) -> List[dict]:
 
         if self.rag is None:
-            return []
+            try:
+                print("[RAG] Initializing security knowledge base...")
+                self.rag = SecurityRAG()
+                print("[RAG] Security knowledge base ready.")
+            except Exception as exc:
+                print(f"[WARNING] RAG initialization failed: {exc}")
+                return []
 
         query = f"""
         Security attack type: {attack}

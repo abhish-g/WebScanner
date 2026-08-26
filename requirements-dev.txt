@@ -1,0 +1,11 @@
+# Local development and CI only. Never installed in the deploy image —
+# these add build time and image size for zero runtime benefit.
+
+-r requirements.txt
+
+pandas
+pytest
+pytest-cov
+black
+flake8
+mypy

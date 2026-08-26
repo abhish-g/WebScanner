@@ -1,23 +1,22 @@
-Flask>=3.0.0
-gunicorn>=21.2.0
+# CPU-only PyTorch. Without this line pip pulls the CUDA build,
+# which is ~2.5GB and will blow up small free-tier containers.
+--extra-index-url https://download.pytorch.org/whl/cpu
 
-requests>=2.31.0
-python-dotenv>=1.0.0
+# --- Web ---
+Flask==3.1.3
+gunicorn==23.0.0
+requests==2.32.3
+python-dotenv==1.0.1
 
-numpy>=1.26.0
-pandas>=2.0.0
-scikit-learn>=1.3.0
-joblib>=1.3.0
+# --- ML / RAG ---
+numpy==2.5.2
+scikit-learn==1.7.2
+joblib==1.5.3
+faiss-cpu==1.15.0
+torch==2.13.0+cpu
+sentence-transformers==6.0.0
 
-faiss-cpu>=1.7.4
-sentence-transformers>=2.2.2
-
-openai>=1.0.0
-transformers>=4.21.0
-torch>=2.0.0
-
-pytest>=7.0.0
-pytest-cov>=4.0.0
-black>=22.0.0
-flake8>=5.0.0
-mypy>=0.991
+# Versions match the local environment where this was tested.
+# scikit-learn in particular MUST match the version that produced
+# model.pkl — unpickling across major versions warns or fails.
+# Regenerate with `pip freeze` after any upgrade.

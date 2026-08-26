@@ -1,3 +1,12 @@
+---
+title: WebScanner
+emoji: 🛡️
+colorFrom: red
+colorTo: gray
+sdk: docker
+app_port: 7860
+pinned: false
+---
 # 🛡️ WebScanner — ML + RAG Security Scanner
 
 > A machine-learning and Retrieval-Augmented Generation (RAG) based web security scanner for detecting common security threats and generating contextual security explanations.
